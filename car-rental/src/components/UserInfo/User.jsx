@@ -60,44 +60,48 @@ const User = () => {
 
     return (
         <div className='text-center'>
-            <div className="car-details">
-                <div className="vehicle-information">
-                    <h1 className='display-4 text-primary text-center py-4 fw-bold'>Select your ride and embark on the journey of a lifetime!</h1>
-                    {/* Conditional rendering based on loading state and error */}
-                    {loading ? (
-                        <p className='fs-3 fw-bold'>Loading cars...Please wait</p>
-                    ) : error ? (
-                        <p className='fs-2 fw-bold text-danger'>Connection with backend couldn't be established!</p>
-                    ) : (
-                        <CarCards vehicles={vehicles} />
-                    )}
+            {error ? (
+                <p className='fs-2 fw-bold text-danger'>Connection with backend couldn't be established!</p>
+            ) : (
+                <div className="car-details">
+                    <div className="vehicle-information">
+                        <h1 className='display-4 text-primary text-center py-4 fw-bold'>Select your ride and embark on the journey of a lifetime!</h1>
+                        {/* Conditional rendering based on loading state */}
+                        {loading ? (
+                            <p className='fs-3 fw-bold'>Loading cars...Please wait</p>
+                        ) : (
+                            <>
+                                <CarCards vehicles={vehicles} />
 
-                    <div>
-                        <form className='text-center pt-4'>
-                            <label className='fs-4'>Vehicle Type:</label>
-                            <select className='fs-4' value={selectedType} onChange={handleTypeChange} required>
-                                <option value="">Select Type</option>
-                                {vehicleTypes.map(type => (
-                                    <option key={type} value={type}>{type}</option>
-                                ))}
-                            </select>
-                            <br></br>
-                            {selectedType && (
-                                <>
-                                    <label className='py-3 fs-4'>Vehicle Make:</label>
-                                    <select className='fs-4' value={selectedMake} onChange={handleMakeChange} required>
-                                        <option value="">Select Make</option>
-                                        {vehicleMake.map(make => (
-                                            <option key={make} value={make}>{make}</option>
-                                        ))}
-                                    </select>
-                                    <br></br>
-                                </>
-                            )}
-                        </form>
+                                <div>
+                                    <form className='text-center pt-4'>
+                                        <label className='fs-4'>Vehicle Type:</label>
+                                        <select className='fs-4' value={selectedType} onChange={handleTypeChange} required>
+                                            <option value="">Select Type</option>
+                                            {vehicleTypes.map(type => (
+                                                <option key={type} value={type}>{type}</option>
+                                            ))}
+                                        </select>
+                                        <br></br>
+                                        {selectedType && (
+                                            <>
+                                                <label className='py-3 fs-4'>Vehicle Make:</label>
+                                                <select className='fs-4' value={selectedMake} onChange={handleMakeChange} required>
+                                                    <option value="">Select Make</option>
+                                                    {vehicleMake.map(make => (
+                                                        <option key={make} value={make}>{make}</option>
+                                                    ))}
+                                                </select>
+                                                <br></br>
+                                            </>
+                                        )}
+                                    </form>
+                                </div>
+                            </>
+                        )}
                     </div>
                 </div>
-            </div>
+            )}
             {/* Book button will only be visible when both vehicle make and types are selected and it will be passed to another component */}
             {isFormValid ? (
                 <div className='mb-5 mt-1'>
