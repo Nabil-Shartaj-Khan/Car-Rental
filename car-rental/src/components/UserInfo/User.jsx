@@ -5,18 +5,17 @@ import { Link } from 'react-router-dom';
 import CarCards from './CarCards';
 
 const User = () => {
-
-    //necessary states for the app to run
-    const [vehicles, setVehicles] = useState([]); //for fetching cars from backend
-    const [vehicleTypes, setVehicleTypes] = useState([]);  //for finding out vehicle type
-    const [vehicleMake, setVehicleMake] = useState([]); //for finding out vehicle make
-    const [selectedType, setSelectedType] = useState(''); //for selecting vehicle type in dropdown
-    const [selectedMake, setSelectedMake] = useState(''); //for selecting vehicle make in dropdown
-    const [isFormValid, setIsFormValid] = useState(false); //to check whether values are selected
+    // Necessary states for the app to run
+    const [vehicles, setVehicles] = useState([]); // for fetching cars from backend
+    const [vehicleTypes, setVehicleTypes] = useState([]); // for finding out vehicle type
+    const [vehicleMake, setVehicleMake] = useState([]); // for finding out vehicle make
+    const [selectedType, setSelectedType] = useState(''); // for selecting vehicle type in dropdown
+    const [selectedMake, setSelectedMake] = useState(''); // for selecting vehicle make in dropdown
+    const [isFormValid, setIsFormValid] = useState(false); // to check whether values are selected
     const [loading, setLoading] = useState(true); // to handle loading state
+    const [error, setError] = useState(null); // to handle backend connection error
 
-
-    //fetching car details from backend whenever the component is mounting
+    // Fetching car details from backend whenever the component is mounted
     useEffect(() => {
         axios.get('http://localhost:5000/cars')
             .then(response => {
@@ -30,6 +29,7 @@ const User = () => {
             })
             .catch(error => {
                 console.error('Error fetching vehicle data:', error);
+                setError(error); // store the error in state
                 setLoading(false); // update loading state even if there's an error
             });
     }, []);
@@ -42,18 +42,18 @@ const User = () => {
         }
     }, [selectedType, vehicles]);
 
-    //this is to check if both dropdowns are selected!
+    // This is to check if both dropdowns are selected!
     useEffect(() => {
         setIsFormValid(selectedType !== '' && selectedMake !== '');
     }, [selectedType, selectedMake]);
 
-
-    //for vehicle type
+    // For vehicle type
     const handleTypeChange = (event) => {
         setSelectedType(event.target.value);
         setSelectedMake('');
     };
-    //for vehicle make
+
+    // For vehicle make
     const handleMakeChange = (event) => {
         setSelectedMake(event.target.value);
     };
@@ -63,16 +63,17 @@ const User = () => {
             <div className="car-details">
                 <div className="vehicle-information">
                     <h1 className='display-4 text-primary text-center py-4 fw-bold'>Select your ride and embark on the journey of a lifetime!</h1>
-                    {/* fetched cars will be rendered conditionally */}
+                    {/* Conditional rendering based on loading state and error */}
                     {loading ? (
                         <p className='fs-3 fw-bold'>Loading cars...Please wait</p>
+                    ) : error ? (
+                        <p className='fs-2 fw-bold text-danger'>Connection with backend couldn't be established!</p>
                     ) : (
                         <CarCards vehicles={vehicles} />
                     )}
 
-                    <div >
-
-                        <form className='text-center pt-4 '>
+                    <div>
+                        <form className='text-center pt-4'>
                             <label className='fs-4'>Vehicle Type:</label>
                             <select className='fs-4' value={selectedType} onChange={handleTypeChange} required>
                                 <option value="">Select Type</option>
@@ -97,7 +98,7 @@ const User = () => {
                     </div>
                 </div>
             </div>
-            {/* book button will only be visible when both vehicle make and types are selected and it will be passed to another component*/}
+            {/* Book button will only be visible when both vehicle make and types are selected and it will be passed to another component */}
             {isFormValid ? (
                 <div className='mb-5 mt-1'>
                     <Link className="btn btn-success px-4 py-3" to={`/form?type=${selectedType}&make=${selectedMake}`}>Book!</Link>
