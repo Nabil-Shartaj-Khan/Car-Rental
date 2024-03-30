@@ -1,0 +1,92 @@
+.user-info {
+    /* Add any additional styling for the user info container */
+  }
+  
+  .section {
+    margin: 0 10px;
+  }
+  
+  .form-column {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  label{
+    font-size: 18px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bold;
+    padding-top: 10px;
+    color: green;
+  }
+
+  input{
+    margin-left: 14px;
+  }
+  
+  .card-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    margin-top: 20px;
+  }
+  
+  .card {
+    width: 300px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    overflow: hidden;
+    background-color: aliceblue;
+  }
+  
+  .user-form-container {
+    margin: auto;
+    width: 80%;
+    padding: 20px;
+  }
+  
+  .user-info {
+    margin-bottom: 20px;
+  }
+  
+  .section {
+    margin-bottom: 20px;
+  }
+  
+  .form-column {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .booking-info {
+    margin-top: 40px;
+    padding-left: 50px;
+  }
+  
+  button[type="submit"] {
+    margin-top: 10px;
+  }
+  
+  Link {
+    margin-top: 20px;
+    display: inline-block;
+    background-color: #007bff;
+    color: white;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 5px;
+  }
+  
+  Link:hover {
+    background-color: #0056b3;
+  }
+
+  h1{
+    color: #007bff;
+    padding-bottom: 20px;
+    padding-top: 20px;
+  }
+
+  p{
+    font-size: 20px;
+
+  }
