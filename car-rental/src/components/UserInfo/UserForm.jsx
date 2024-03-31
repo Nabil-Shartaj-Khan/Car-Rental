@@ -54,6 +54,7 @@ const UserForm = () => {
 
 
     //function to calculate the charges
+
     const handleSubmit = async (e) => {
         e.preventDefault();
 
@@ -63,7 +64,7 @@ const UserForm = () => {
             return;
         }
 
-        //if all okay, then it sends these data in backend to calculate
+        // If all okay, then it sends this data to the backend to calculate
         try {
             setCalculatingCharge(true);
             const response = await axios.post('http://localhost:5000/calculateCharge', {
@@ -76,7 +77,8 @@ const UserForm = () => {
                 liabilityInsurance,
                 rentalTax
             });
-            setTotalCharge(response.data.totalCharge);
+            // Floor the total charge
+            setTotalCharge(Math.floor(response.data.totalCharge));
             setCalculatingCharge(false);
         } catch (error) {
             console.error('Error calculating charge:', error);
@@ -89,6 +91,17 @@ const UserForm = () => {
     return (
         <div className="user-form-container">
             <h3 className='text-center py-4 mt-4 text-danger'>Fill up reservation details, customer information and additional charges to proceed further</h3>
+            {/* Invoice link */}
+            <div className="link-box text-center mb-3">
+                {/* //passing data in query params */}
+                <Link
+                    className={`btn btn-success py-2 ${!isFormComplete() && 'disabled'}`}
+                    to={`/invoice?selectedType=${selectedType}&selectedMake=${selectedMake}&duration=${duration}&hours=${hours}&discount=${discount}&collisionDamage=${collisionDamage}&liabilityInsurance=${liabilityInsurance}&rentalTax=${rentalTax}&firstName=${firstName}&lastName=${lastName}&email=${email}&phone=${phone}&totalCharge=${totalCharge}`}
+                    disabled={!isFormComplete()}
+                >
+                    Invoice details
+                </Link>
+            </div>
             <div className="user-info d-flex justify-content-around">
                 {/* Reservation Details */}
 
@@ -102,7 +115,7 @@ const UserForm = () => {
                             <input type="date" placeholder="Input pickup date here..." min={today} onChange={(e) => setPickupDate(e.target.value)} /><br></br>
                             <label>Return date:</label>
                             <input type="date" placeholder="Input return date here..." min={today} onChange={(e) => setReturnDate(e.target.value)} /><br></br>
-                            <label>Duration:</label>
+                            <label>Extra hours:</label>
                             <input type="number" placeholder="in hours..." max={24} onChange={(e) => setHours(e.target.value)} /><br></br>
                             <label>Discount:</label>
                             <input type="number" placeholder="Discount if any..." max={100} onChange={(e) => setDiscount(e.target.value)} />
@@ -156,8 +169,8 @@ const UserForm = () => {
                         <p>Selected Type: {selectedType}</p>
                         <p>Selected Make: {selectedMake}</p>
                         {duration !== '' && <p>Duration (in days): {duration}</p>}
-                        {hours !== '' && <p>Duration (in hours): {hours}</p>}
-                        {discount !== '' && <p>Discount: {discount}</p>}
+                        {hours !== '' && <p>Extra hours : {hours}</p>}
+                        {discount !== '' && <p>Discount: {discount}%</p>}
 
 
                     </form>
@@ -182,17 +195,7 @@ const UserForm = () => {
                     <p className='fw-bold py-2'>{totalCharge} $</p>
                 </div>
             )}
-            {/* Invoice link */}
-            <div className="text-center mt-4">
-                {/* //passing data in query params */}
-                <Link
-                    className={`btn btn-success py-2 ${!isFormComplete() && 'disabled'}`}
-                    to={`/invoice?selectedType=${selectedType}&selectedMake=${selectedMake}&duration=${duration}&hours=${hours}&discount=${discount}&collisionDamage=${collisionDamage}&liabilityInsurance=${liabilityInsurance}&rentalTax=${rentalTax}&firstName=${firstName}&lastName=${lastName}&email=${email}&phone=${phone}&totalCharge=${totalCharge}`}
-                    disabled={!isFormComplete()}
-                >
-                    Invoice details
-                </Link>
-            </div>
+
         </div>
     );
 }
